@@ -26,14 +26,14 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 
 /*
-* 1. Необходимо получить список продуктов
+* 1. Необходимо получить список продуктов (ниже пример получения списка категорий)
 * 2. Отсоритровать его по возрастанию поля newPrice
-* 3. Если список пустой, выбрасывать ошибку загрузки продуктов
-* 4. Отобразить список "Name NewPrice"
-* 5. Написать тест, если список пустой, ошибка загрузки продуктов
+* 3. Отобразить список "Name NewPrice"
 *
 * Доп задания
 * 1. Вывеести значение "Name Цена:NewPrice"
+* 2. Написать тест, если список пустой, ошибка загрузки продуктов
+* 3. Если список пустой, выбрасывать ошибку загрузки продуктов
 *
 * Request
 * {{baseUrl}}/menu_product?companyUuid={{companyUuid}}
@@ -61,7 +61,6 @@ import kotlinx.serialization.json.Json
 * */
 
 class MainActivity : ComponentActivity() {
-
 
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {

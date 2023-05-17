@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.testappshtr"
-        minSdk 26
+        minSdk 23
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -68,5 +68,13 @@ dependencies {
     implementation("io.ktor:ktor-client-okhttp:2.3.0")
     implementation("io.ktor:ktor-client-content-negotiation:2.3.0")
     implementation("io.ktor:ktor-serialization-kotlinx-json:2.3.0")
+
+
+    // https://mvnrepository.com/artifact/io.mockk/mockk
+    testImplementation("io.mockk:mockk:1.13.5")
+
+    // https://mvnrepository.com/artifact/app.cash.turbine/turbine
+    testImplementation("app.cash.turbine:turbine:0.13.0")
+
 
 }

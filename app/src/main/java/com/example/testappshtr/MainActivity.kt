@@ -4,25 +4,19 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import com.example.testappshtr.service.FoodService
+import com.example.testappshtr.service.FoodServiceImpl
+import com.example.testappshtr.ui.list.MainViewModel
+import com.example.testappshtr.ui.list.ProductsListComposable
 import com.example.testappshtr.ui.theme.TestAppShtrTheme
 import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.engine.okhttp.OkHttp
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.serialization.kotlinx.json.json
-import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
+import io.ktor.client.engine.okhttp.*
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 
 /*
@@ -41,6 +35,8 @@ import kotlinx.serialization.json.Json
 * base url https://food-delivery-api-bunbeauty.herokuapp.com/
 * companyUuid 7416dba5-2825-4fe3-abfb-1494a5e2bf99
 *
+*
+* https://food-delivery-api-bunbeauty.herokuapp.com/menu_product?companyUuid=7416dba5-2825-4fe3-abfb-1494a5e2bf99
 * Json
 *  {
     "count": 82,
@@ -79,6 +75,9 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        val service: FoodService = FoodServiceImpl(client)
+        val viewModel = MainViewModel(service)
+
         setContent {
             TestAppShtrTheme {
                 // A surface container using the 'background' color from the theme
@@ -86,70 +85,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    val results = runBlocking {
-                        client.get("https://food-delivery-api-bunbeauty.herokuapp.com/category") {
-                            parameter("companyUuid", "7416dba5-2825-4fe3-abfb-1494a5e2bf99")
-                        }.body<ListServer<CategoryServer>>().results
-                    }
-
-                    Column {
-                        results.forEach {
-                            Text(text = it.name)
-                        }
-                    }
+                    ProductsListComposable(viewModel)
                 }
             }
         }
-    }
-}
-
-
-@Serializable
-data class ListServer<T>(
-
-    @SerialName("count")
-    val count: Int,
-
-    @SerialName("results")
-    val results: List<T>
-)
-
-
-@Serializable
-data class MenuProductServer(
-
-    @SerialName("uuid")
-    val uuid: String,
-
-    @SerialName("name")
-    val name: String,
-
-    @SerialName("newPrice")
-    val newPrice: Int
-)
-
-@Serializable
-class CategoryServer(
-
-    @SerialName("uuid")
-    val uuid: String,
-
-    @SerialName("name")
-    val name: String,
-
-    @SerialName("priority")
-    val priority: Int,
-)
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    TestAppShtrTheme {
-        Greeting("Android")
     }
 }

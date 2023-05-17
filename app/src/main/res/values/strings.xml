@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TestAppShtr</string>
+    <string name="price_prefix">%s Цена:%s</string>
 </resources>
